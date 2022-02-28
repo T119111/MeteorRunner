@@ -24,27 +24,6 @@ public class GroundTile : MonoBehaviour
         Destroy(gameObject, 2);
     }
 
-    /*public void SpawnObstacle()
-    {
-        //Choose a random point to spawn the obstacle
-        int obstacleSpawnIndex = Random.Range(3, 0);
-        Transform spawnPoint = transform.GetChild(obstacleSpawnIndex).transform;
-
-        //Spawn the obstacle at the position
-        Instantiate(obstaclePrefab, spawnPoint.position, Quaternion.identity, transform);
-
-    }
-    public void SpawnObstacle2()
-    {
-        //Choose a random point to spawn the obstacle
-        int obstacleSpawnIndex = Random.Range(2, 5);
-        Transform spawnPoint = transform.GetChild(obstacleSpawnIndex).transform;
-
-        //Spawn the obstacle at the position
-        Instantiate(obstaclePrefab2, spawnPoint.position, Quaternion.identity, transform);
-    }
-    */
-
     //隕石の生成する数、位置
     public void SpawnObstacle()
     {

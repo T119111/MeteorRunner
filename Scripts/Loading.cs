@@ -20,6 +20,7 @@ public class Loading : MonoBehaviour
 
     IEnumerator LoadData()
     {
+        SoundManager.Instance.PlaySE(SESoundData.SE.Button);
         //ロードが完了したら、プレイシーンに移動
         //index = PlayerPrefs.GetInt("Stage");
         async = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1 + ChooseStage.index);

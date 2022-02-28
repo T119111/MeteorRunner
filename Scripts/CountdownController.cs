@@ -21,13 +21,14 @@ public class CountdownController : MonoBehaviour
         while(countdownTime > 0)
         {
             countdownDisplay.text = countdownTime.ToString();
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.99f);
             countdownTime--;
         }
         countdownDisplay.text = "GO!";
         joystick.SetActive(true);
-        FindObjectOfType<AudioManager>().PlaySound("MainTheme");
-        yield return new WaitForSeconds(1f);
+        //FindObjectOfType<AudioManager>().PlaySound("MainTheme");
+        SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Main);
+        yield return new WaitForSeconds(0.99f);
         countdownDisplay.gameObject.SetActive(false);
     }
 }

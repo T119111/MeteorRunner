@@ -26,17 +26,31 @@ public class PauseMenu : MonoBehaviour
     public void PauseButton()
     {
         GameIsPaused = true;
+        SoundManager.Instance.PlaySE(SESoundData.SE.Button);
+        SoundManager.Instance.StopBGM(BGMSoundData.BGM.Main);
+        SoundManager.Instance.StopSE(SESoundData.SE.CountDown);
     }
 
     //再開ボタンを押したらフラグを下ろす
     public void ResumeButton()
     {
         GameIsPaused = false;
+        SoundManager.Instance.PlaySE(SESoundData.SE.Button);
+        SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Main);
+    }
+
+    //やり直しボタン
+    public void RedoButton()
+    {
+        GameIsPaused = false;
+        SoundManager.Instance.PlaySE(SESoundData.SE.Button);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     //メニューに戻る
     public void MenuButton()
     {
+        SoundManager.Instance.PlaySE(SESoundData.SE.Button);
         SceneManager.LoadScene("Menu");
         GameIsPaused = false;
     }

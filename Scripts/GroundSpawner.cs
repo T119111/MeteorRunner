@@ -25,10 +25,14 @@ public class GroundSpawner : MonoBehaviour
     void Start()
     {
         //オブジェクトを繰り返して生成
-        for(int i=0; i<50; i++)
+        for(int i=0; i<55; i++)
         {
             //最初の3つ目のタイルまでオブジェクトを生成しない
             if (i < 3)
+            {
+                SpawnTile(false);
+            }
+            else if(i > 45)
             {
                 SpawnTile(false);
             }

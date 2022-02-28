@@ -18,7 +18,7 @@ public class RandomDrop : MonoBehaviour
         y -= speed * Time.deltaTime;
 
         //隕石が地面下に行ったらまた降り注ぐ
-        if(y < -1.0f)
+        if (y < -1.0f)
         {
             fire.SetActive(false);
             explosion.SetActive(true);
