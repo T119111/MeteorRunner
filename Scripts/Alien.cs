@@ -76,17 +76,6 @@ public class Alien : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
-        {
-            //ゲームオーバー
-            playerMovement.Die();
-        }
-
-        if (collision.gameObject.CompareTag("Shield"))
-        {
-            //障害物がシールドに当たった時の音を再生
-            SoundManager.Instance.PlaySE(SESoundData.SE.Shield);
-            //シールドに当たってエイリアンが消える
-            Destroy(this.gameObject);
-        }
+            playerMovement.Die(); //ゲームオーバー
     }
 }

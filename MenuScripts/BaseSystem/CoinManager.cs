@@ -7,6 +7,7 @@ using TMPro;
 public class CoinManager : MonoBehaviour
 {
     public int coin;
+    public int shield;
     public int Lock1;
     public int Lock2;
     public int Lock3;
@@ -16,6 +17,8 @@ public class CoinManager : MonoBehaviour
     public int AllClear;
     public int already = 0;
     public TextMeshProUGUI coinText;
+    public TextMeshProUGUI coinText2;
+    public TextMeshProUGUI shieldText;
     public GameObject notenoughText1;
     public GameObject unlockText1;
     public GameObject lockImage1;
@@ -60,7 +63,8 @@ public class CoinManager : MonoBehaviour
         //PlayerPrefs.SetInt("Coins", coin);
         //今まで手に入れたコイン情報を取得
         coin = PlayerPrefs.GetInt("Coins");
-
+        //持っているシールドの数を取得
+        shield = PlayerPrefs.GetInt("Shield");
         //ハイスコア情報を取得
         GameManager.highscore = PlayerPrefs.GetInt("HighScore");
 
@@ -82,6 +86,8 @@ public class CoinManager : MonoBehaviour
     {
         coin = PlayerPrefs.GetInt("Coins");
         coinText.text = coin.ToString();
+        coinText2.text = coin.ToString();
+        shieldText.text = "所持数：" + shield.ToString();
         //HighScoreText.text = GameManager.highscore.ToString();
 
         //最後のキャラクターを解放できる条件を格納
@@ -181,7 +187,6 @@ public class CoinManager : MonoBehaviour
         else
         {
             //キャラクター解放
-            //FindObjectOfType<AudioManager>().PlaySound("Unlock");
             SoundManager.Instance.PlaySE(SESoundData.SE.Unlock);
             lockImage2.SetActive(false);
             coin -= 1000;
@@ -206,7 +211,6 @@ public class CoinManager : MonoBehaviour
         else
         {
             //キャラクター解放
-            //FindObjectOfType<AudioManager>().PlaySound("Unlock");
             SoundManager.Instance.PlaySE(SESoundData.SE.Unlock);
             lockImage3.SetActive(false);
             coin -= 1000;
@@ -232,7 +236,6 @@ public class CoinManager : MonoBehaviour
         else
         {
             //キャラクター解放
-            //FindObjectOfType<AudioManager>().PlaySound("Unlock");
             SoundManager.Instance.PlaySE(SESoundData.SE.Unlock);
             lockImage4.SetActive(false);
             coin -= 1000;
@@ -257,7 +260,6 @@ public class CoinManager : MonoBehaviour
         else
         {
             //キャラクター解放
-            //FindObjectOfType<AudioManager>().PlaySound("Unlock");
             SoundManager.Instance.PlaySE(SESoundData.SE.Unlock);
             lockImage5.SetActive(false);
             unlockText5.SetActive(true);
@@ -276,7 +278,6 @@ public class CoinManager : MonoBehaviour
         if (Lock6 == 5)
         {
             //キャラクター解放
-            //FindObjectOfType<AudioManager>().PlaySound("Unlock");
             SoundManager.Instance.PlaySE(SESoundData.SE.Unlock);
             lockImage6.SetActive(false);
             unlockText6.SetActive(true);
@@ -289,6 +290,26 @@ public class CoinManager : MonoBehaviour
         else
         {
             notenoughText6.SetActive(true);
+        }
+    }
+
+    //Itemを買う
+    public void ItemPurchase()
+    {
+        SoundManager.Instance.PlaySE(SESoundData.SE.Button);
+        //コインが足りなかったら、テキストメッセージを表示
+        if (coin < 100)
+        {
+            notenoughText1.SetActive(true);
+        }
+        else
+        {
+            //シールド購入
+            SoundManager.Instance.PlaySE(SESoundData.SE.Unlock);
+            coin -= 100;
+            shield += 1;
+            PlayerPrefs.SetInt("Coins", coin);
+            PlayerPrefs.SetInt("Shield", shield);
         }
     }
 }

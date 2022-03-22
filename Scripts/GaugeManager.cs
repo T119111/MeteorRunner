@@ -24,9 +24,9 @@ public class GaugeManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Obstacle.i < 3)
+        if (ForceField.num < 3)
         {
-            gauge[Obstacle.i].SetActive(true);
+            gauge[ForceField.num].SetActive(true);
         }
     }
 }

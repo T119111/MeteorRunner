@@ -21,21 +21,8 @@ public class AlienSpaceShip : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        //シールドに衝突した時の処理
-        if (collision.gameObject.CompareTag("Shield"))
-        {
-            //シールドに当たってエイリアンが消える
-            Destroy(this.gameObject);
-
-            //障害物がシールドに当たった時の音を再生
-            SoundManager.Instance.PlaySE(SESoundData.SE.Shield);
-        }
-
         //プレイヤーに衝突した時の処理
         if (collision.gameObject.CompareTag("Player"))
-        {
-            //ゲームオーバー
-            PlayerMovement.instance.Die();
-        }
+            PlayerMovement.instance.Die(); //ゲームオーバー
     }
 }

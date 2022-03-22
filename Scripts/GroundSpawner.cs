@@ -6,6 +6,7 @@ public class GroundSpawner : MonoBehaviour
 {
     [SerializeField] GameObject groundTile;
     Vector3 nextSpawnPoint;
+    public int useshield;
 
     //タイルの位置に対してオブジェクトを生成
     public void SpawnTile(bool spawnItems)
@@ -17,13 +18,18 @@ public class GroundSpawner : MonoBehaviour
         {
             temp.GetComponent<GroundTile>().SpawnObstacle();
             temp.GetComponent<GroundTile>().SpawnEasy();
-            temp.GetComponent<GroundTile>().SpawnItems();
             temp.GetComponent<GroundTile>().SpawnCoins();
+            if(useshield == 1)
+            {
+                temp.GetComponent<GroundTile>().SpawnItems();
+            }
         }
     }
     // Start is called before the first frame update
     void Start()
     {
+        useshield = PlayerPrefs.GetInt("UseShield");
+
         //オブジェクトを繰り返して生成
         for(int i=0; i<55; i++)
         {

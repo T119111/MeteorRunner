@@ -170,15 +170,13 @@ public class PlayFabLogin : MonoBehaviour
     }
 
     //ランキング取得
-    public void RequestLeaderBoard(int index)
+    public void RequestLeaderBoard(string index)
     {
-        if(index == 0)
-        {
-            PlayFabClientAPI.GetLeaderboard(
+        PlayFabClientAPI.GetLeaderboard(
             new GetLeaderboardRequest
             {
 
-                StatisticName = "HighScoreStage1",
+                StatisticName = "HighScoreStage" + index,
                 StartPosition = 0,
                 MaxResultsCount = 10
             },
@@ -193,144 +191,5 @@ public class PlayFabLogin : MonoBehaviour
                 Debug.Log(error.GenerateErrorReport());
             }
             );
-        }
-
-        if (index == 1)
-        {
-            PlayFabClientAPI.GetLeaderboard(
-            new GetLeaderboardRequest
-            {
-
-                StatisticName = "HighScoreStage2",
-                StartPosition = 0,
-                MaxResultsCount = 10
-            },
-            result =>
-            {
-                result.Leaderboard.ForEach(
-                    x => Debug.Log(string.Format(": {0}\n: {1}", x.DisplayName, x.StatValue))
-                    );
-            },
-            error =>
-            {
-                Debug.Log(error.GenerateErrorReport());
-            }
-            );
-        }
-
-        if (index == 2)
-        {
-            PlayFabClientAPI.GetLeaderboard(
-            new GetLeaderboardRequest
-            {
-
-                StatisticName = "HighScoreStage3",
-                StartPosition = 0,
-                MaxResultsCount = 10
-            },
-            result =>
-            {
-                result.Leaderboard.ForEach(
-                    x => Debug.Log(string.Format(": {0}\n: {1}", x.DisplayName, x.StatValue))
-                    );
-            },
-            error =>
-            {
-                Debug.Log(error.GenerateErrorReport());
-            }
-            );
-        }
-
-        if (index == 3)
-        {
-            PlayFabClientAPI.GetLeaderboard(
-            new GetLeaderboardRequest
-            {
-
-                StatisticName = "HighScoreStage4",
-                StartPosition = 0,
-                MaxResultsCount = 10
-            },
-            result =>
-            {
-                result.Leaderboard.ForEach(
-                    x => Debug.Log(string.Format(": {0}\n: {1}", x.DisplayName, x.StatValue))
-                    );
-            },
-            error =>
-            {
-                Debug.Log(error.GenerateErrorReport());
-            }
-            );
-        }
-
-        if (index == 4)
-        {
-            PlayFabClientAPI.GetLeaderboard(
-            new GetLeaderboardRequest
-            {
-
-                StatisticName = "HighScoreStage5",
-                StartPosition = 0,
-                MaxResultsCount = 10
-            },
-            result =>
-            {
-                result.Leaderboard.ForEach(
-                    x => Debug.Log(string.Format(": {0}\n: {1}", x.DisplayName, x.StatValue))
-                    );
-            },
-            error =>
-            {
-                Debug.Log(error.GenerateErrorReport());
-            }
-            );
-        }
-
-        if (index == 5)
-        {
-            PlayFabClientAPI.GetLeaderboard(
-            new GetLeaderboardRequest
-            {
-
-                StatisticName = "HighScoreStage6",
-                StartPosition = 0,
-                MaxResultsCount = 10
-            },
-            result =>
-            {
-                result.Leaderboard.ForEach(
-                    x => Debug.Log(string.Format(": {0}\n: {1}", x.DisplayName, x.StatValue))
-                    );
-            },
-            error =>
-            {
-                Debug.Log(error.GenerateErrorReport());
-            }
-            );
-        }
-
-        if (index == 6)
-        {
-            PlayFabClientAPI.GetLeaderboard(
-            new GetLeaderboardRequest
-            {
-
-                StatisticName = "HighScoreStage7",
-                StartPosition = 0,
-                MaxResultsCount = 10
-            },
-            result =>
-            {
-                result.Leaderboard.ForEach(
-                    x => Debug.Log(string.Format(": {0}\n: {1}", x.DisplayName, x.StatValue))
-                    );
-            },
-            error =>
-            {
-                Debug.Log(error.GenerateErrorReport());
-            }
-            );
-        }
     }
 }

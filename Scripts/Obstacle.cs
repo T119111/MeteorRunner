@@ -8,29 +8,12 @@ public class Obstacle : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        //シールドに衝突時
-        if (collision.gameObject.CompareTag("Shield"))
-        {
-            //シールドに当たって障害物が消える
-            Destroy(this.gameObject);
-            //障害物がシールドに当たった時の音を再生
-            SoundManager.Instance.PlaySE(SESoundData.SE.Shield);
-            //シールドに当たった数を数える
-            i++;
-        }
-
         //プレイヤーに衝突時
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            //ゲームオーバー
-            PlayerMovement.instance.Die();
-        }
+        if (collision.gameObject.CompareTag("Player")) 
+            PlayerMovement.instance.Die(); //ゲームオーバー
 
         //エイリアンに衝突時
         if (collision.gameObject.CompareTag("Alien"))
-        {
-            //エイリアンに当たったら消去
-            Destroy(this.gameObject);
-        }
+            Destroy(this.gameObject); //エイリアンに当たったら消去
     }
 }

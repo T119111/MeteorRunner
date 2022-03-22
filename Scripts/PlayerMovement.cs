@@ -7,9 +7,9 @@ public class PlayerMovement : MonoBehaviour
 {
     static public PlayerMovement instance;
     private int index;
-    public float speed = 8;
-    public float speedIncresePoint = 0.2f;
-    private float horizontalInput;
+    public float speed = 8; //スピード
+    public float speedIncresePoint = 0.2f; //コインの取得ごとに速くなる
+    private float horizontalInput;　//水平方向の動き
     public bool alive = true;
     public bool shieldflag = false;
     public bool jumpflag = false;
@@ -113,28 +113,23 @@ public class PlayerMovement : MonoBehaviour
         //horizontalInput = Input.GetAxis("Horizontal");
 
         //行動制限
-        //右方向の制限
-        if(pos.x > 2.00f)
+        if(pos.x > 2.00f)　//右方向の制限
         {
             horizontalInput = 0;
             pos.x = 1.99f;
             myTransform.position = pos;
         }
         else
-        {
             horizontalInput = joystick.Horizontal;
-        }
-        //左方向の制限
-        if (pos.x < -2.00f)
+
+        if (pos.x < -2.00f)　//左方向の制限
         {
             horizontalInput = 0;
             pos.x = -1.99f;
             myTransform.position = pos;
         }
         else
-        {
             horizontalInput = joystick.Horizontal;
-        }
 
         //ジョイスティック上入力でジャンプ
         if (verticalMove >= 0.5f)
@@ -217,17 +212,13 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("GetShield"))
         {
             if (!shieldflag)
-            {
                 SoundManager.Instance.PlaySE(SESoundData.SE.Shield);
-            }
             shieldflag = true;
             Obstacle.i = 0;
             ShieldButton.SetActive(true);
 
             if(Shield == false)
-            {
                 ShieldButton.SetActive(false);
-            }
         }
     }
 

@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     static public GameManager instance;
     public int inter = 0; //インタースティシャルを表示しているか
     public int current; //現在のステージ
+    public string stage; //cuurentをstring型へ変換するため
     public int stageclear; //どのステージまでクリアしているか
     public int score; //プレイヤーのスコア
     public int coin; //現在のステージで獲得したコイン
@@ -19,7 +20,7 @@ public class GameManager : MonoBehaviour
     public int Ranking; //ランキング機能を利用するか
     static public int highscore = 0; //ハイスコア
     static public int coins = 0; //コインの累計
-    public bool bestscore = false;
+    public bool bestscore = false; //今までの最高スコアだった場合UIに表示するため
     public bool GameIsFinished = false; //ゲームが終わったか確認
     public bool isCalledOnece = false; //1回だけ実行するため
     public GameObject player;
@@ -50,6 +51,65 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
     }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        //ランキングを利用するか
+        Ranking = PlayerPrefs.GetInt("Ranking");
+
+        //インタスティシャルを表示しているか
+        inter = PlayerPrefs.GetInt("Interstitial");
+
+        //現在のステージ（ビルドシーンの番号-1）
+        current = SceneManager.GetActiveScene().buildIndex - 1; //current = 1 (stage1)
+
+        stage = current.ToString(); //string型に変換
+
+        //どのステージをクリアしているか
+        stageclear = PlayerPrefs.GetInt("StageClear");
+
+        //累積されたコインの数を呼び出し
+        coins = PlayerPrefs.GetInt("Coins");
+
+        //ステージごとのハイスコアを呼び出し
+        highscore = PlayerPrefs.GetInt("HighScore" + stage);
+
+        SoundManager.Instance.StopBGM(BGMSoundData.BGM.Title);
+        SoundManager.Instance.PlaySE(SESoundData.SE.CountDown);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //スコアの計算
+        score = coin * distance + distance;
+
+        //ハイスコアの更新
+        if(highscore < score)
+        {
+            bestscore = true;
+            highscore = score;
+        }
+
+        //スコアの値を表示
+        OverScoreText.text = score.ToString();
+        ClearScoreText.text = score.ToString();
+
+        //ゲームが終了したらスコア送信
+        if (GameIsFinished)
+        {
+            if (!isCalledOnece)
+            {
+                isCalledOnece = true;
+                PlayerPrefs.SetInt("HighScore" + stage, highscore);　//ハイスコアを保存
+                PlayerPrefs.SetInt("UseShield", 0);　//シールドの使用を初期化
+                if (Ranking == 1) //ランキングを使用する場合
+                    SubmitScore(score); //スコアを送信
+            }
+        }
+    }
+
 
     //コインの表示
     public void IncrementScore()
@@ -113,44 +173,11 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt("Coins", coins);
         PlayerPrefs.Save();
 
-        //ステージのロック解除
-        if(current == 2)
-        {
-            //すでに先のステージをクリアしている場合上書きしないようにする
-            if (stageclear < 1)
-                PlayerPrefs.SetInt("StageClear", 1);
-        }
-        else if(current == 3)
-        {
-            //すでに先のステージをクリアしている場合上書きしないようにする
-            if (stageclear < 2)
-                PlayerPrefs.SetInt("StageClear", 2);
-        }
-        else if(current == 4)
-        {
-            //すでに先のステージをクリアしている場合上書きしないようにする
-            if (stageclear < 3)
-                PlayerPrefs.SetInt("StageClear", 3);
-        }
-        else if (current == 5)
-        {
-            //すでに先のステージをクリアしている場合上書きしないようにする
-            if (stageclear < 4)
-                PlayerPrefs.SetInt("StageClear", 4);
-        }
-        else if (current == 6)
-        {
-            //すでに先のステージをクリアしている場合上書きしないようにする
-            if (stageclear < 5)
-                PlayerPrefs.SetInt("StageClear", 5);
-        }
-        else if (current == 7)
-        {
-            //すでに先のステージをクリアしている場合上書きしないようにする
-            if (stageclear < 6)
-                PlayerPrefs.SetInt("StageClear", 6);
-        }
-        else if(current == 8)
+        //まだクリアしていない場合、ステージのロック解除
+        if (stageclear < current)
+            PlayerPrefs.SetInt("StageClear", current);
+
+        if (current == 7)
         {
             PlayerPrefs.SetInt("AllClear", 1);
         }
@@ -205,144 +232,17 @@ public class GameManager : MonoBehaviour
         SoundManager.Instance.PlaySE(SESoundData.SE.Button);
         //1回目ならインタースティシャル広告を流す
         if (inter == 0)
-        {
             GoogleAds.Instance.OnClickShowInterstitialButton();
-        }
         else
-        {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        }
         inter++;
-        PlayerPrefs.SetInt("Interstitial", inter);
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        //ランキングを利用するか
-        Ranking = PlayerPrefs.GetInt("Ranking");
-
-        //インタスティシャルを表示しているか
-        inter = PlayerPrefs.GetInt("Interstitial");
-        //現在のステージ
-        current = SceneManager.GetActiveScene().buildIndex;
-
-        //どのステージをクリアしているか
-        stageclear = PlayerPrefs.GetInt("StageClear");
-
-        //累積されたコインの数を呼び出し
-        coins = PlayerPrefs.GetInt("Coins");
-
-        //前回までのステージごとのHighScoreを呼び出し
-        if (current == 2)
-        {
-            highscore = PlayerPrefs.GetInt("HighScore");
-        }
-        else if (current == 3)
-        {
-            highscore = PlayerPrefs.GetInt("HighScore2");
-        }
-        else if (current == 4)
-        {
-            highscore = PlayerPrefs.GetInt("HighScore3");
-        }
-        else if (current == 5)
-        {
-            highscore = PlayerPrefs.GetInt("HighScore4");
-        }
-        else if (current == 6)
-        {
-            highscore = PlayerPrefs.GetInt("HighScore5");
-        }
-        else if (current == 7)
-        {
-            highscore = PlayerPrefs.GetInt("HighScore6");
-        }
-        else if (current == 8)
-        {
-            highscore = PlayerPrefs.GetInt("HighScore7");
-        }
-
-        SoundManager.Instance.StopBGM(BGMSoundData.BGM.Title);
-        SoundManager.Instance.PlaySE(SESoundData.SE.CountDown);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //スコアの計算
-        score = coin * distance + distance;
-
-        //ハイスコアの更新
-        if(highscore < score)
-        {
-            bestscore = true;
-            highscore = score;
-        }
-
-        if (GameIsFinished)
-        {
-            if (current == 2)
-            {
-                PlayerPrefs.SetInt("HighScore", highscore);
-                PlayerPrefs.Save();
-            }
-            else if (current == 3)
-            {
-                PlayerPrefs.SetInt("HighScore2", highscore);
-                PlayerPrefs.Save();
-            }
-            else if (current == 4)
-            {
-                PlayerPrefs.SetInt("HighScore3", highscore);
-                PlayerPrefs.Save();
-            }
-            else if (current == 5)
-            {
-                PlayerPrefs.SetInt("HighScore4", highscore);
-                PlayerPrefs.Save();
-            }
-            else if (current == 6)
-            {
-                PlayerPrefs.SetInt("HighScore5", highscore);
-                PlayerPrefs.Save();
-            }
-            else if (current == 7)
-            {
-                PlayerPrefs.SetInt("HighScore6", highscore);
-                PlayerPrefs.Save();
-            }
-            else if (current == 8)
-            {
-                PlayerPrefs.SetInt("HighScore7", highscore);
-                PlayerPrefs.Save();
-            }
-        }
-
-        //スコアの値を表示
-        OverScoreText.text = score.ToString();
-        ClearScoreText.text = score.ToString();
-
-        //ゲームが終了したらスコア送信
-        if (GameIsFinished)
-        {
-            if (!isCalledOnece)
-            {
-                isCalledOnece = true;
-                if (Ranking == 1)
-                {
-                    SubmitScore(score);
-                }
-            }
-        }
+        PlayerPrefs.SetInt("Interstitial", inter); //1回流した
     }
 
     //ステージごとにスコア送信
     void SubmitScore(int playerScore)
     {
-        if (current == 2)
-        {
-            PlayFabClientAPI.UpdatePlayerStatistics(
+        PlayFabClientAPI.UpdatePlayerStatistics(
             new UpdatePlayerStatisticsRequest
             {
                 Statistics = new List<StatisticUpdate>()
@@ -350,14 +250,14 @@ public class GameManager : MonoBehaviour
 
                     new StatisticUpdate
                     {
-                        StatisticName = "HighScoreStage1",
+                        StatisticName = "HighScoreStage" + stage,
                         Value = playerScore
                     }
                 }
             },
             result =>
             {
-                Debug.Log("スコア送信");
+                Debug.Log("HighScoreStage" + stage + "スコア送信");
                 GameIsFinished = false;
             },
             error =>
@@ -365,166 +265,5 @@ public class GameManager : MonoBehaviour
                 Debug.Log(error.GenerateErrorReport());
             }
             );
-        }
-
-        if(current == 3)
-        {
-            PlayFabClientAPI.UpdatePlayerStatistics(
-            new UpdatePlayerStatisticsRequest
-            {
-                Statistics = new List<StatisticUpdate>()
-                {
-
-                    new StatisticUpdate
-                    {
-                        StatisticName = "HighScoreStage2",
-                        Value = playerScore
-                    }
-                }
-            },
-            result =>
-            {
-                Debug.Log("スコア送信");
-                GameIsFinished = false;
-            },
-            error =>
-            {
-                Debug.Log(error.GenerateErrorReport());
-            }
-            );
-        }
-
-        if (current == 4)
-        {
-            PlayFabClientAPI.UpdatePlayerStatistics(
-            new UpdatePlayerStatisticsRequest
-            {
-                Statistics = new List<StatisticUpdate>()
-                {
-
-                    new StatisticUpdate
-                    {
-                        StatisticName = "HighScoreStage3",
-                        Value = playerScore
-                    }
-                }
-            },
-            result =>
-            {
-                Debug.Log("スコア送信");
-                GameIsFinished = false;
-            },
-            error =>
-            {
-                Debug.Log(error.GenerateErrorReport());
-            }
-            );
-        }
-
-        if (current == 5)
-        {
-            PlayFabClientAPI.UpdatePlayerStatistics(
-            new UpdatePlayerStatisticsRequest
-            {
-                Statistics = new List<StatisticUpdate>()
-                {
-
-                    new StatisticUpdate
-                    {
-                        StatisticName = "HighScoreStage4",
-                        Value = playerScore
-                    }
-                }
-            },
-            result =>
-            {
-                Debug.Log("スコア送信");
-                GameIsFinished = false;
-            },
-            error =>
-            {
-                Debug.Log(error.GenerateErrorReport());
-            }
-            );
-        }
-
-        if (current == 6)
-        {
-            PlayFabClientAPI.UpdatePlayerStatistics(
-            new UpdatePlayerStatisticsRequest
-            {
-                Statistics = new List<StatisticUpdate>()
-                {
-
-                    new StatisticUpdate
-                    {
-                        StatisticName = "HighScoreStage5",
-                        Value = playerScore
-                    }
-                }
-            },
-            result =>
-            {
-                Debug.Log("スコア送信");
-                GameIsFinished = false;
-            },
-            error =>
-            {
-                Debug.Log(error.GenerateErrorReport());
-            }
-            );
-        }
-        if (current == 7)
-        {
-            PlayFabClientAPI.UpdatePlayerStatistics(
-            new UpdatePlayerStatisticsRequest
-            {
-                Statistics = new List<StatisticUpdate>()
-                {
-
-                    new StatisticUpdate
-                    {
-                        StatisticName = "HighScoreStage6",
-                        Value = playerScore
-                    }
-                }
-            },
-            result =>
-            {
-                Debug.Log("スコア送信");
-                GameIsFinished = false;
-            },
-            error =>
-            {
-                Debug.Log(error.GenerateErrorReport());
-            }
-            );
-        }
-        if (current == 8)
-        {
-            PlayFabClientAPI.UpdatePlayerStatistics(
-            new UpdatePlayerStatisticsRequest
-            {
-                Statistics = new List<StatisticUpdate>()
-                {
-
-                    new StatisticUpdate
-                    {
-                        StatisticName = "HighScoreStage7",
-                        Value = playerScore
-                    }
-                }
-            },
-            result =>
-            {
-                Debug.Log("スコア送信");
-                GameIsFinished = false;
-            },
-            error =>
-            {
-                Debug.Log(error.GenerateErrorReport());
-            }
-            );
-        }
     }   
 }

@@ -7,7 +7,7 @@ using TMPro;
 public class ChooseStage : MonoBehaviour
 {
     private GameObject[] StageList;
-    public TextMeshProUGUI HighScoreText;
+    public TextMeshProUGUI HighScoreText1;
     public TextMeshProUGUI HighScoreText2;
     public TextMeshProUGUI HighScoreText3;
     public TextMeshProUGUI HighScoreText4;
@@ -28,6 +28,7 @@ public class ChooseStage : MonoBehaviour
     public GameObject lockImage6;
     static public int index = 0;
     private int stageclear = 0;
+    public int highscore1;
     public int highscore2;
     public int highscore3;
     public int highscore4;
@@ -38,15 +39,15 @@ public class ChooseStage : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //ハイスコアの情報を呼び出し
-        GameManager.highscore = PlayerPrefs.GetInt("HighScore");
-        highscore2 = PlayerPrefs.GetInt("HighScore2");
-        highscore3 = PlayerPrefs.GetInt("HighScore3");
-        highscore4 = PlayerPrefs.GetInt("HighScore4");
-        highscore5 = PlayerPrefs.GetInt("HighScore5");
-        highscore6 = PlayerPrefs.GetInt("HighScore6");
-        highscore7 = PlayerPrefs.GetInt("HighScore7");
-
+        //ハイスコアを文字列に変換し、テキストとして表示
+        HighScoreText1.text = PlayerPrefs.GetInt("HighScore1").ToString();
+        HighScoreText2.text = PlayerPrefs.GetInt("HighScore2").ToString();
+        HighScoreText3.text = PlayerPrefs.GetInt("HighScore3").ToString();
+        HighScoreText4.text = PlayerPrefs.GetInt("HighScore4").ToString();
+        HighScoreText5.text = PlayerPrefs.GetInt("HighScore5").ToString();
+        HighScoreText6.text = PlayerPrefs.GetInt("HighScore6").ToString();
+        HighScoreText7.text = PlayerPrefs.GetInt("HighScore7").ToString();
+        
         //ステージの情報を呼び出し
         index = PlayerPrefs.GetInt("Stage");
 
@@ -75,15 +76,6 @@ public class ChooseStage : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //ハイスコアテキストを表示
-        HighScoreText.text = GameManager.highscore.ToString();
-        HighScoreText2.text = highscore2.ToString();
-        HighScoreText3.text = highscore3.ToString();
-        HighScoreText4.text = highscore4.ToString();
-        HighScoreText5.text = highscore5.ToString();
-        HighScoreText6.text = highscore6.ToString();
-        HighScoreText7.text = highscore7.ToString();
-
         //クリア状況に応じて、プレイできるステージを表示
         if (stageclear >= 1)
         {
