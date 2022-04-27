@@ -1,9 +1,10 @@
 # MeteorRunner
+Scriptsの中にMenuScriptsとPlayScriptsがあり、
 
 MenuScriptsがメニュー画面のスクリプトで、
 
-Scriptsが主にゲームプレイに関わるスクリプトです。
+PlayScriptsが主にゲームプレイに関わるスクリプトです。
 
-[動画](https://www.youtube.com/shorts/swbJJRBsXAA)
+[紹介動画](https://www.youtube.com/shorts/swbJJRBsXAA)
 
-[iOSゲーム「メテオランナー」](https://apps.apple.com/us/app/meteor-runner/id1608346742)
+[AppStore：「メテオランナー」](https://apps.apple.com/us/app/meteor-runner/id1608346742)
